@@ -1,65 +1,39 @@
-package avito.backendassignment.model;
+package avito.backendassignment.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
- * User
+ * LoginPostRequest
  */
 
+@JsonTypeName("_login_post_request")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-21T05:51:18.622903100+03:00[Europe/Moscow]")
-public class User {
-	
-	private UUID id;
+public class LoginPostRequest {
 	
 	private String email;
 	
-	/**
-	 * Gets or Sets role
-	 */
-	private RoleEnum role;
+	private String password;
 	
-	public User() {
+	public LoginPostRequest() {
 		super();
 	}
 	
 	/**
 	 * Constructor with only required parameters
 	 */
-	public User(String email, RoleEnum role) {
+	public LoginPostRequest(String email, String password) {
 		this.email = email;
-		this.role = role;
+		this.password = password;
 	}
 	
-	public User id(UUID id) {
-		this.id = id;
-		return this;
-	}
-	
-	/**
-	 * Get id
-	 *
-	 * @return id
-	 */
-	@Valid
-	@Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-	@JsonProperty("id")
-	public UUID getId() {
-		return id;
-	}
-	
-	public void setId(UUID id) {
-		this.id = id;
-	}
-	
-	public User email(String email) {
+	public LoginPostRequest email(String email) {
 		this.email = email;
 		return this;
 	}
@@ -81,25 +55,25 @@ public class User {
 		this.email = email;
 	}
 	
-	public User role(RoleEnum role) {
-		this.role = role;
+	public LoginPostRequest password(String password) {
+		this.password = password;
 		return this;
 	}
 	
 	/**
-	 * Get role
+	 * Get password
 	 *
-	 * @return role
+	 * @return password
 	 */
 	@NotNull
-	@Schema(name = "role", requiredMode = Schema.RequiredMode.REQUIRED)
-	@JsonProperty("role")
-	public RoleEnum getRole() {
-		return role;
+	@Schema(name = "password", requiredMode = Schema.RequiredMode.REQUIRED)
+	@JsonProperty("password")
+	public String getPassword() {
+		return password;
 	}
 	
-	public void setRole(RoleEnum role) {
-		this.role = role;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	@Override
@@ -110,24 +84,22 @@ public class User {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		User user = (User) o;
-		return Objects.equals(this.id, user.id) &&
-				Objects.equals(this.email, user.email) &&
-				Objects.equals(this.role, user.role);
+		LoginPostRequest loginPostRequest = (LoginPostRequest) o;
+		return Objects.equals(this.email, loginPostRequest.email) &&
+				Objects.equals(this.password, loginPostRequest.password);
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, email, role);
+		return Objects.hash(email, password);
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class User {\n");
-		sb.append("    id: ").append(toIndentedString(id)).append("\n");
+		sb.append("class LoginPostRequest {\n");
 		sb.append("    email: ").append(toIndentedString(email)).append("\n");
-		sb.append("    role: ").append(toIndentedString(role)).append("\n");
+		sb.append("    password: ").append(toIndentedString(password)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

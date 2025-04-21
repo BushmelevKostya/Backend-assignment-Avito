@@ -1,8 +1,6 @@
 package avito.backendassignment.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
@@ -26,41 +24,6 @@ public class Reception {
 	private OffsetDateTime dateTime;
 	
 	private UUID pvzId;
-	
-	/**
-	 * Gets or Sets status
-	 */
-	public enum StatusEnum {
-		IN_PROGRESS("in_progress"),
-		
-		CLOSE("close");
-		
-		private String value;
-		
-		StatusEnum(String value) {
-			this.value = value;
-		}
-		
-		@JsonValue
-		public String getValue() {
-			return value;
-		}
-		
-		@Override
-		public String toString() {
-			return String.valueOf(value);
-		}
-		
-		@JsonCreator
-		public static StatusEnum fromValue(String value) {
-			for (StatusEnum b : StatusEnum.values()) {
-				if (b.value.equals(value)) {
-					return b;
-				}
-			}
-			throw new IllegalArgumentException("Unexpected value '" + value + "'");
-		}
-	}
 	
 	private StatusEnum status;
 	
