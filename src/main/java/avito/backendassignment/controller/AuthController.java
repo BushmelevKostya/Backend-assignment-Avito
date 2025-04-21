@@ -5,6 +5,7 @@ import avito.backendassignment.controller.request.LoginPostRequest;
 import avito.backendassignment.controller.request.RegisterPostRequest;
 import avito.backendassignment.model.User;
 import avito.backendassignment.model.RoleEnum;
+import avito.backendassignment.service.CustomUserDetailsService;
 import avito.backendassignment.util.JwtTokenUtil;
 import avito.backendassignment.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +32,7 @@ public class AuthController {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private CustomUserDetailsService userDetailsService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -50,7 +51,7 @@ public class AuthController {
 			}
 	)
 	public ResponseEntity<Map<String, String>> dummyLoginPost(@Valid @RequestBody DummyLoginPostRequest dummyLoginPostRequest) {
-		String token = jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername("dummy"), dummyLoginPostRequest.getRole().toString());
+		String token = jwtTokenUtil.generateToken(userDetailsService.loadUserByRole("dummy"), dummyLoginPostRequest.getRole().toString());
 		return ResponseEntity.ok(Map.of("token", token));
 	}
 	
