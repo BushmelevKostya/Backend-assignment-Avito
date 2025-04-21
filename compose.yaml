@@ -1,9 +1,21 @@
 services:
-  postgres:
-    image: 'postgres:latest'
+  db:
+    image: postgres:15
+    container_name: db-pvz
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=dbpassword
     ports:
-      - '5432'
+      - "5434:5432"
+    volumes:
+      - db-pvz-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U dbuser -d mydb" ]
+      interval: 5s
+      timeout: 1s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  db-pvz-data:

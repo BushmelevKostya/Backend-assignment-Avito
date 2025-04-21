@@ -198,7 +198,7 @@ paths:
           description: Неверный запрос
           content:
             application/json:
-              schema:
+              schema
                 $ref: '#/components/schemas/Error'
         '403':
           description: Доступ запрещен

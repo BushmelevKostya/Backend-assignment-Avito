@@ -4,17 +4,39 @@ import avito.backendassignment.controller.request.DummyLoginPostRequest;
 import avito.backendassignment.controller.request.LoginPostRequest;
 import avito.backendassignment.controller.request.RegisterPostRequest;
 import avito.backendassignment.model.User;
+import avito.backendassignment.model.RoleEnum;
+import avito.backendassignment.util.JwtTokenUtil;
+import avito.backendassignment.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping
 public class AuthController {
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	private UserDetailsService userDetailsService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
 	
 	@PostMapping(value = "/dummyLogin", consumes = "application/json", produces = "application/json")
 	@Operation(
@@ -27,8 +49,9 @@ public class AuthController {
 							content = @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class)))
 			}
 	)
-	public ResponseEntity<String> dummyLoginPost(@Valid @RequestBody DummyLoginPostRequest dummyLoginPostRequest) {
-		return null;
+	public ResponseEntity<Map<String, String>> dummyLoginPost(@Valid @RequestBody DummyLoginPostRequest dummyLoginPostRequest) {
+		String token = jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername("dummy"), dummyLoginPostRequest.getRole().toString());
+		return ResponseEntity.ok(Map.of("token", token));
 	}
 	
 	@PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
@@ -43,7 +66,21 @@ public class AuthController {
 			}
 	)
 	public ResponseEntity<String> loginPost(@Valid @RequestBody LoginPostRequest loginPostRequest) {
-		return null;
+		try {
+			authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(
+					loginPostRequest.getEmail(), 
+					loginPostRequest.getPassword()
+				)
+			);
+		} catch (BadCredentialsException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+		}
+		
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(loginPostRequest.getEmail());
+		final String token = jwtTokenUtil.generateToken(userDetails, "USER");
+		
+		return ResponseEntity.ok(token);
 	}
 	
 	@PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
@@ -58,6 +95,18 @@ public class AuthController {
 			}
 	)
 	public ResponseEntity<User> registerPost(@Valid @RequestBody RegisterPostRequest registerPostRequest) {
-		return null;
+		if (userService.existsByEmail(registerPostRequest.getEmail())) {
+			return ResponseEntity.badRequest().build();
+		}
+		
+		User newUser = new User();
+		newUser.setId(UUID.randomUUID());
+		newUser.setEmail(registerPostRequest.getEmail());
+		newUser.setPassword(registerPostRequest.getPassword());
+		newUser.setRole(RoleEnum.EMPLOYEE);
+
+		User createdUser = userService.createUser(newUser);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
 	}
 }

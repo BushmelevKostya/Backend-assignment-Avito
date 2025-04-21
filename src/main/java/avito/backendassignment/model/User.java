@@ -6,6 +6,10 @@ import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -13,14 +17,17 @@ import java.util.UUID;
 /**
  * User
  */
- 
+@Table("users")
+@Setter
+@Getter
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-21T05:51:18.622903100+03:00[Europe/Moscow]")
 public class User {
-	
+	@Id
 	private UUID id;
 	
 	private String email;
 	
+	private String  password;
 	/**
 	 * Gets or Sets role
 	 */
@@ -55,10 +62,6 @@ public class User {
 		return id;
 	}
 	
-	public void setId(UUID id) {
-		this.id = id;
-	}
-	
 	public User email(String email) {
 		this.email = email;
 		return this;
@@ -77,10 +80,6 @@ public class User {
 		return email;
 	}
 	
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
 	public User role(RoleEnum role) {
 		this.role = role;
 		return this;
@@ -96,10 +95,6 @@ public class User {
 	@JsonProperty("role")
 	public RoleEnum getRole() {
 		return role;
-	}
-	
-	public void setRole(RoleEnum role) {
-		this.role = role;
 	}
 	
 	@Override
@@ -143,4 +138,3 @@ public class User {
 		return o.toString().replace("\n", "\n    ");
 	}
 }
-
