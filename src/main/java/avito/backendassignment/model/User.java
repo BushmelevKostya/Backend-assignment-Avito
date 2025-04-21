@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  * User
  */
-
+ 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-21T05:51:18.622903100+03:00[Europe/Moscow]")
 public class User {
 	
