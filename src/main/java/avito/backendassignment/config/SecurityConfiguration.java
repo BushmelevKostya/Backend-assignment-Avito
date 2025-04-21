@@ -1,5 +1,6 @@
 package avito.backendassignment.config;
 
+import avito.backendassignment.service.CustomUserDetailsService;
 import avito.backendassignment.util.JwtRequestFilter;
 import avito.backendassignment.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -29,6 +27,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final JwtTokenUtil jwtTokenUtil;
+    private final CustomUserDetailsService customUserDetailsService;
     
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -55,9 +54,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/moderator/**").hasRole("MODERATOR")
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
@@ -77,28 +74,11 @@ public class SecurityConfiguration {
     
     @Bean
     public JwtRequestFilter jwtRequestFilter() {
-        return new JwtRequestFilter(jwtTokenUtil, userDetailsService());
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new JwtRequestFilter(jwtTokenUtil, customUserDetailsService);
     }
     
     @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("password")
-                .roles("USER")
-                .build();
-        
-        UserDetails dummyUser = User.withDefaultPasswordEncoder()
-                .username("dummy")
-                .password("dummy")
-                .roles("USER")
-                .build();
-        
-        return new InMemoryUserDetailsManager(user, dummyUser);
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
