@@ -100,7 +100,6 @@ public class AuthController {
 		}
 		
 		User newUser = new User();
-		newUser.setId(UUID.randomUUID());
 		newUser.setEmail(registerPostRequest.getEmail());
 		newUser.setPassword(registerPostRequest.getPassword());
 		newUser.setRole(RoleEnum.EMPLOYEE);
