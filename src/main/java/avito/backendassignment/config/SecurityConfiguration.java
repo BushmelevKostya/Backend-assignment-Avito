@@ -3,6 +3,7 @@ package avito.backendassignment.config;
 import avito.backendassignment.service.CustomUserDetailsService;
 import avito.backendassignment.util.JwtRequestFilter;
 import avito.backendassignment.util.JwtTokenUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,6 +54,10 @@ public class SecurityConfiguration {
                         .requestMatchers("/products", "/pvz/*/delete_last_product").hasAnyRole("USER", "MODERATOR", "ADMIN")
                         .requestMatchers("/moderator/**").hasRole("MODERATOR")
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
