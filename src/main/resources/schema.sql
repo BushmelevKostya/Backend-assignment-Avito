@@ -19,9 +19,8 @@ CREATE TABLE pvz (
 CREATE TABLE receptions (
                             id SERIAL PRIMARY KEY,
                             date_time TIMESTAMP WITH TIME ZONE NOT NULL,
-                            pvz_id bigint NOT NULL,
-                            status VARCHAR(50) NOT NULL,
-                            CONSTRAINT fk_reception_pvz FOREIGN KEY (pvz_id) REFERENCES pvz (id)
+                            pvz_id bigint NOT NULL REFERENCES pvz(id),
+                            status VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE products (

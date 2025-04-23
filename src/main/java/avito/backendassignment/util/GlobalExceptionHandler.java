@@ -1,8 +1,6 @@
 package avito.backendassignment.util;
 
-import avito.backendassignment.exceptions.ForbiddenException;
-import avito.backendassignment.exceptions.InvalidCityException;
-import avito.backendassignment.exceptions.UserNotFoundException;
+import avito.backendassignment.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -57,5 +55,23 @@ public class GlobalExceptionHandler {
         error.put("message", "Произошла ошибка, но не волнуйся, все будет хорошо ^-^");
         error.put("details", ex.getMessage());
         return ResponseEntity.internalServerError().body(error);
+    }
+    
+    @ExceptionHandler(ActiveReceptionExistsException.class)
+    public ResponseEntity<Error> handleActiveReceptionExists(ActiveReceptionExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Error(ex.getMessage()));
+    }
+    
+    @ExceptionHandler(NoActiveReceptionException.class)
+    public ResponseEntity<Error> handleNoActiveReception(NoActiveReceptionException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Error(ex.getMessage()));
+    }
+    
+    @ExceptionHandler(PvzNotFoundException.class)
+    public ResponseEntity<Error> handlePvzNotFound(PvzNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Error(ex.getMessage()));
     }
 }

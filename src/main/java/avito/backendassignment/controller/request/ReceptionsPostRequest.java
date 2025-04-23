@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * ReceptionsPostRequest
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-04-21T05:51:18.622903100+03:00[Europe/Moscow]")
 public class ReceptionsPostRequest {
 
-  private UUID pvzId;
+  private Long pvzId;
 
   public ReceptionsPostRequest() {
     super();
@@ -27,11 +26,11 @@ public class ReceptionsPostRequest {
   /**
    * Constructor with only required parameters
    */
-  public ReceptionsPostRequest(UUID pvzId) {
+  public ReceptionsPostRequest(Long pvzId) {
     this.pvzId = pvzId;
   }
 
-  public ReceptionsPostRequest pvzId(UUID pvzId) {
+  public ReceptionsPostRequest pvzId(Long pvzId) {
     this.pvzId = pvzId;
     return this;
   }
@@ -43,11 +42,11 @@ public class ReceptionsPostRequest {
   @NotNull @Valid 
   @Schema(name = "pvzId", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("pvzId")
-  public UUID getPvzId() {
+  public Long getPvzId() {
     return pvzId;
   }
 
-  public void setPvzId(UUID pvzId) {
+  public void setPvzId(Long pvzId) {
     this.pvzId = pvzId;
   }
 

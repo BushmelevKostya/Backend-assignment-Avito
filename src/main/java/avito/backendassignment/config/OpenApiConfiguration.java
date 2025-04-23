@@ -17,23 +17,14 @@ public class OpenApiConfiguration {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .openapi("3.0.3")
-                .info(new Info()
-                        .title("PVZ Service")
-                        .version("1.0")
-                        .description("Backend assignment Avito"))
-                .servers(List.of(new Server()
-                        .url("http://localhost:8080")
-                        .description("Local Server")))
-                .externalDocs(new ExternalDocumentation()
-                        .description("API Documentation")
-                        .url("/swagger-ui.html"))
+                .info(new Info().title("PVZ Service").version("1.0"))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components()
-                        .addSecuritySchemes("bearerAuth",
-                                new SecurityScheme()
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")))
-                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
+                        .addSecuritySchemes("bearerAuth", new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")
+                        )
+                );
     }
 }

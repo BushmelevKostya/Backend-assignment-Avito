@@ -1,6 +1,7 @@
 package avito.backendassignment.model;
 
 import jakarta.annotation.Generated;
+import jakarta.persistence.GeneratedValue;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,25 +23,19 @@ import jakarta.persistence.EnumType;
 public class Reception {
 	
 	@Id
+	@GeneratedValue
 	private Long id;
 	
 	@NotNull
-	private OffsetDateTime dateTime;
+	private OffsetDateTime dateTime = OffsetDateTime.now();
 	
 	@NotNull
 	private Long pvzId;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private StatusEnum status;
+	private StatusEnum status = StatusEnum.IN_PROGRESS;
 	
 	public Reception() {
-		super();
-	}
-	
-	public Reception(OffsetDateTime dateTime, Long pvzId, StatusEnum status) {
-		this.dateTime = dateTime;
-		this.pvzId = pvzId;
-		this.status = status;
 	}
 }
