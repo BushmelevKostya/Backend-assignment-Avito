@@ -69,6 +69,12 @@ public class GlobalExceptionHandler {
                 .body(new Error(ex.getMessage()));
     }
     
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Error> handleNoActiveReception(BadRequestException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new Error(ex.getMessage()));
+    }
+    
     @ExceptionHandler(PvzNotFoundException.class)
     public ResponseEntity<Error> handlePvzNotFound(PvzNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

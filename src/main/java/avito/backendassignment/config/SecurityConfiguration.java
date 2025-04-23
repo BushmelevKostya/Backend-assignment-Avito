@@ -51,7 +51,7 @@ public class SecurityConfiguration {
                                 "/favicon.ico"
                         ).permitAll()
                         .requestMatchers("/register", "/login", "/dummyLogin").permitAll()
-                        .requestMatchers("/products", "/pvz/*/delete_last_product").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                        .requestMatchers("/products", "/pvz/*/delete_last_product").hasAnyRole("EMPLOYEE", "MODERATOR", "ADMIN")
                         .requestMatchers("/moderator/**").hasRole("MODERATOR")
                         .anyRequest().authenticated()
                 )

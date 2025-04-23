@@ -9,7 +9,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * ProductsPostRequest
@@ -21,7 +20,7 @@ public class ProductsPostRequest {
 
   private TypeEnum type;
 
-  private UUID pvzId;
+  private Long pvzId;
 
   public ProductsPostRequest() {
     super();
@@ -30,7 +29,7 @@ public class ProductsPostRequest {
   /**
    * Constructor with only required parameters
    */
-  public ProductsPostRequest(TypeEnum type, UUID pvzId) {
+  public ProductsPostRequest(TypeEnum type, Long pvzId) {
     this.type = type;
     this.pvzId = pvzId;
   }
@@ -55,7 +54,7 @@ public class ProductsPostRequest {
     this.type = type;
   }
 
-  public ProductsPostRequest pvzId(UUID pvzId) {
+  public ProductsPostRequest pvzId(Long pvzId) {
     this.pvzId = pvzId;
     return this;
   }
@@ -67,11 +66,11 @@ public class ProductsPostRequest {
   @NotNull @Valid 
   @Schema(name = "pvzId", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("pvzId")
-  public UUID getPvzId() {
+  public Long getPvzId() {
     return pvzId;
   }
 
-  public void setPvzId(UUID pvzId) {
+  public void setPvzId(Long pvzId) {
     this.pvzId = pvzId;
   }
 
